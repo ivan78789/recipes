@@ -1,0 +1,68 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my_site_app
+    restart: unless-stopped
+    ports:
+      - "8001:80"
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    environment:
+      APP_ENV: local
+      APP_DEBUG: true
+      APP_KEY: base64:replace_with_your_key
+      APP_URL: http://localhost
+
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: laravel
+      DB_USERNAME: root
+      DB_PASSWORD: secret
+    depends_on:
+      - mysql
+    networks:
+      - mysite_network
+
+  mysql:
+    image: mysql:8
+    container_name: my_site_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mysite_network
+
+  node:
+    image: node:22
+    container_name: my_site_node
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    command: npm run dev
+    ports:
+      - "5174:5173"
+    networks:
+      - mysite_network
+
+networks:
+  mysite_network:
+    driver: bridge
+
+volumes:
+  mysqldata:
