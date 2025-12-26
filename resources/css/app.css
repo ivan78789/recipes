@@ -6,75 +6,109 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
-    
-/* Только коричневые тона, как книги */
---color-book-dark: #3E2E28;        /* Тёмное дерево */
---color-book-medium: #735A4B;      /* Коричневый как старая книга */
---color-book-light: #B8A99A;       /* Светло-коричневый */
---color-paper: #F5F1E8;            /* Цвет страницы */
---color-ink: #1A1715;              /* Чёрный как чернила */
---color-accent: #C17736;           /* Коричневый акцент */
+    --color-charcoal: #36454F;     /* Уголь */
+    --color-sand: #E3CAA5;         /* Песок */
+    --color-herb: #7A9D54;         /* Травы */
+    --color-brick: #B22222;        /* Кирпич */
+    --color-paper: #F8F5F0;        /* Бумага */
+    --color-text: #2D3748;         /* Текст */
+}
+nav img {
+    filter: brightness(0) saturate(100%) invert(0%) sepia(100%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
 }
 
-
-
-
-
-
-
-
-
-
-/* Свайпер */
-.swiper {
-    width: 100%;
-    height: 100%;
+nav button:hover img {
+    filter: brightness(0) saturate(100%) invert(30%) sepia(100%) saturate(1000%) hue-rotate(340deg) brightness(90%) contrast(100%);
+}
+body {
+    background-color: var(--color-bg-light);
+    color: var(--color-choco);
 }
 
-.swiper-slide {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.swiper-pagination {
-    position: absolute !important;
-    bottom: 40px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    display: flex !important;
-    gap: 12px !important;
-    z-index: 30 !important;
-}
-
-.swiper-pagination-line {
-    width: 60px;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.3);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
+.recipe-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
     overflow: hidden;
+    transition: all 0.3s ease;
 }
 
-.swiper-pagination-line::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-    background: linear-gradient(90deg, var(--color-book-dark), var(--color-book-medium), var(--color-accent));
-    transition: width 6s linear;
+.recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(66, 50, 42, 0.1);
 }
 
-.swiper-pagination-line.active {
-    background: rgba(255, 255, 255, 0.5);
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-tomato), var(--color-caramel));
+    color: white;
+    border-radius: 12px;
+    font-weight: 600;
 }
 
-.swiper-pagination-line.active::before {
-    width: 100%;
-    box-shadow: 0 0 10px rgba(255, 152, 0, 0.8);
+.btn-secondary {
+    background: var(--color-mint);
+    color: var(--color-choco);
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.header-light {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.tag {
+    background: var(--color-peach);
+    color: var(--color-choco);
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.swiper-progress-bar {
+    background: linear-gradient(90deg, 
+        var(--color-peach), 
+        var(--color-mint),
+        var(--color-caramel));
+    height: 4px;
+    border-radius: 2px;
+}
+
+.swiper-progress-bar.active {
+    box-shadow: 0 0 10px var(--color-lemon);
+}
+/* Добавь если нет */
+.z-50 {
+    z-index: 50;
+}
+
+.z-40 {
+    z-index: 40;
+}
+
+/* Анимации для выпадающих элементов */
+[x-cloak] {
+    display: none !important;
+}
+/* Плавное скрытие/показ элементов */
+.transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+}
+
+/* Чтобы ссылки не прыгали при скрытии */
+.whitespace-nowrap {
+    white-space: nowrap;
+}
+
+/* Для плавного изменения ширины */
+.flex-grow {
+    flex-grow: 1;
+}
+
+.flex-shrink-0 {
+    flex-shrink: 0;
 }

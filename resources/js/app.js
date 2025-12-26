@@ -5,6 +5,10 @@ import { Pagination, Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
+import SearchModal from "./components/SearchModal";
+
+// Регистрируем компонент глобально
+Alpine.data("searchModal", SearchModal);
 
 window.Alpine = Alpine;
 Alpine.start();
@@ -15,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         effect: "fade",
         fadeEffect: { crossFade: true },
         loop: true,
-        speed: 2000,
+        speed: 1000,
         autoplay: { delay: 6000, disableOnInteraction: false },
         on: {
             slideChange: function () {
