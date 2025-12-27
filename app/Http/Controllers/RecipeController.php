@@ -92,7 +92,16 @@ class RecipeController extends Controller
         ]);
 
         $data['user_id'] = Auth::id();
-        $data['slug'] = Str::slug($data['title']);
+        
+        // Генерируем уникальный slug
+        $baseSlug = Str::slug($data['title']);
+        $slug = $baseSlug;
+        $counter = 1;
+        while (Recipe::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $counter;
+            $counter++;
+        }
+        $data['slug'] = $slug;
 
         // Загрузка изображения
         if ($request->hasFile('image')) {
@@ -135,7 +144,17 @@ class RecipeController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $data['slug'] = Str::slug($data['title']);
+        // Генерируем уникальный slug только если название изменилось
+        if ($recipe->title !== $data['title']) {
+            $baseSlug = Str::slug($data['title']);
+            $slug = $baseSlug;
+            $counter = 1;
+            while (Recipe::where('slug', $slug)->where('id', '!=', $recipe->id)->exists()) {
+                $slug = $baseSlug . '-' . $counter;
+                $counter++;
+            }
+            $data['slug'] = $slug;
+        }
 
         // Загрузка нового изображения
         if ($request->hasFile('image')) {

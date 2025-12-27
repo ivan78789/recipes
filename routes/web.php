@@ -21,17 +21,17 @@ Route::get('/dashboard', function () {
 
 // Рецепты
 Route::prefix('recipes')->group(function () {
-    // Публичные маршруты
+    // Публичные маршруты (специфичные маршруты должны быть ПЕРЕД динамическими)
     Route::get('/', [RecipeController::class, 'index'])->name('recipes.index');
     Route::get('/popular', [RecipeController::class, 'popular'])->name('recipes.popular');
     Route::get('/favorites', [RecipeController::class, 'favorites'])->name('recipes.favorites');
     Route::get('/category/{category:slug}', [RecipeController::class, 'category'])->name('recipes.category');
-    Route::get('/{recipe:slug}', [RecipeController::class, 'show'])->name('recipes.show'); // Детальная страница
 
-    // CRUD (только для авторизованных)
+    // CRUD (только для авторизованных) - должны быть ПЕРЕД динамическим маршрутом
     Route::middleware('auth')->group(function () {
         Route::get('/create', [RecipeController::class, 'create'])->name('recipes.create');
         Route::post('/', [RecipeController::class, 'store'])->name('recipes.store');
+        Route::get('/my', [RecipeController::class, 'my'])->name('recipes.my');
         Route::get('/{recipe:slug}/edit', [RecipeController::class, 'edit'])->name('recipes.edit');
         Route::put('/{recipe:slug}', [RecipeController::class, 'update'])->name('recipes.update');
         Route::delete('/{recipe:slug}', [RecipeController::class, 'destroy'])->name('recipes.destroy');
@@ -48,6 +48,9 @@ Route::prefix('recipes')->group(function () {
         // Избранное
         Route::post('/{recipe:slug}/favorite', [FavoriteController::class, 'toggle'])->name('recipes.favorite.toggle');
     });
+
+    // Динамический маршрут должен быть ПОСЛЕДНИМ
+    Route::get('/{recipe:slug}', [RecipeController::class, 'show'])->name('recipes.show');
 });
 
 // Профиль и загрузка аватара
@@ -55,7 +58,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/avatar', [ProfileController::class, 'avatar'])->name('profile.avatar');
-    Route::get('/recipes/my', [RecipeController::class, 'my'])->name('recipes.my');
     Route::get('/reviews/my', [ReviewController::class, 'my'])->name('reviews.my');
 
     // Пароль пользователя
