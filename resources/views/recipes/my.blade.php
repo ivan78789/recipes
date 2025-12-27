@@ -1,19 +1,33 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Мои рецепты</h2>
-    </x-slot>
-    <div class="py-8">
-        <div class="max-w-4xl mx-auto">
-            @forelse($recipes as $recipe)
-                <div class="mb-4 p-4 bg-white rounded-xl shadow">
-                    <h3 class="font-bold text-lg">{{ $recipe->title }}</h3>
-                    <p>{{ $recipe->description }}</p>
-                    <a href="{{ route('recipes.show', $recipe) }}" class="text-red-500 hover:underline">Подробнее</a>
-                </div>
-            @empty
-                <div class="text-gray-500">У вас пока нет рецептов.</div>
-            @endforelse
-            {{ $recipes->links() }}
+@extends('layouts.app')
+
+@section('title', 'Мои рецепты')
+
+@section('content')
+    <div class="max-w-7xl mx-auto py-12 px-4">
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-3xl font-bold">Мои рецепты</h1>
+            <a href="{{ route('recipes.create') }}" class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition">
+                + Добавить рецепт
+            </a>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            @forelse($recipes as $recipe)
+                <x-recipe-card :recipe="$recipe" />
+            @empty
+                <div class="col-span-full text-center py-12">
+                    <p class="text-gray-500 text-lg mb-4">У вас пока нет рецептов.</p>
+                    <a href="{{ route('recipes.create') }}" class="inline-block bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition">
+                        Создать первый рецепт
+                    </a>
+                </div>
+            @endforelse
+        </div>
+
+        @if($recipes->hasPages())
+            <div class="mt-8">
+                {{ $recipes->links() }}
+            </div>
+        @endif
     </div>
-</x-app-layout>
+@endsection

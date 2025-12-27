@@ -22,8 +22,7 @@ class ProfileController extends Controller
         $favorites = [];
         if ($user) {
             $recipes = Recipe::where('user_id', $user->id)->latest()->get();
-            // favorites placeholder — implement later
-            $favorites = [];
+            $favorites = $user->favorites()->latest()->get();
         }
 
         return view('dashboard', [
@@ -76,12 +75,18 @@ class ProfileController extends Controller
     public function avatar(Request $request)
     {
         $request->validate([
-            'avatar' => 'required|image|max:2048',
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        
         $user = $request->user();
-        $path = $request->file('avatar')->store('avatars', 'public');
-        $user->avatar_url = '/storage/' . $path;
-        $user->save();
-        return back()->with('status', 'avatar-updated');
+        
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar_url = '/storage/' . $path;
+            $user->save();
+            return back()->with('status', 'avatar-updated');
+        }
+        
+        return back()->withErrors(['avatar' => 'Не удалось загрузить файл']);
     }
 }

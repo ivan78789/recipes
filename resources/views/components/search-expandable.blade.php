@@ -52,10 +52,14 @@
     },
     
     performSearch() {
+        const params = new URLSearchParams();
         if (this.searchQuery.trim()) {
-            console.log('Search:', this.searchQuery, this.filters);
-            this.closeAll();
+            params.set('search', this.searchQuery.trim());
         }
+        if (this.filters.category) {
+            params.set('category', this.filters.category);
+        }
+        window.location.href = '{{ route("recipes.index") }}?' + params.toString();
     }
 }" class="relative">
     

@@ -33,7 +33,7 @@
     </a>
 
     <!-- Избранное -->
-    <a href="{{ route('recipes.index') }}" class="flex items-center gap-2 text-gray-800 hover:text-red-600 transition-colors relative font-medium px-1 py-2
+    <a href="{{ route('recipes.favorites') }}" class="flex items-center gap-2 text-gray-800 hover:text-red-600 transition-colors relative font-medium px-1 py-2
         after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-red-600 after:transition-all after:duration-300 hover:after:w-full">
         <svg class="w-4 h-4 flex-shrink-0" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

@@ -3,50 +3,53 @@
 @section('title', 'Рецепты')
 
 @section('content')
-    <div class="max-w-6xl mx-auto py-12 px-4">
-        <h1 class="text-3xl font-bold mb-6">Все рецепты</h1>
+    <div class="max-w-7xl mx-auto py-12 px-4">
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-3xl font-bold">Все рецепты</h1>
+            @auth
+                <a href="{{ route('recipes.create') }}" class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition">
+                    + Добавить рецепт
+                </a>
+            @endauth
+        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Фильтры -->
+        @if(isset($categories) && $categories->count() > 0)
+            <div class="mb-6 flex flex-wrap gap-2">
+                <a href="{{ route('recipes.index') }}" 
+                   class="px-4 py-2 rounded-lg {{ !request('category') ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+                    Все
+                </a>
+                @foreach($categories as $category)
+                    <a href="{{ route('recipes.index', ['category' => $category->id]) }}" 
+                       class="px-4 py-2 rounded-lg {{ request('category') == $category->id ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+                        {{ $category->name }}
+                    </a>
+                @endforeach
+            </div>
+        @endif
+
+        <!-- Список рецептов -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             @forelse($recipes as $recipe)
-                <article class="recipe-card p-4 flex flex-col justify-between h-full">
-                    <div>
-                        <h2 class="text-xl font-semibold mb-2">{{ $recipe->title }}</h2>
-                        <p class="text-sm text-gray-600">{{ $recipe->description }}</p>
-                    </div>
-
-                    <div class="mt-4 flex items-center justify-between">
-                        <a href="{{ route('recipes.show', $recipe) }}" class="text-red-600 font-medium">Открыть →</a>
-
-                        @auth
-                            @php
-                                /** @var \App\Models\User $user */
-                                $user = Auth::user();
-                                $isFav = $user->favorites()->where('recipe_id', $recipe->id)->exists();
-                            @endphp
-                            <form action="{{ route('recipes.favorite.toggle', $recipe) }}" method="POST" class="favorite-form" data-recipe-id="{{ $recipe->id }}">
-                                @csrf
-                                <button type="button" title="Избранное" class="favorite-btn p-2 rounded-full hover:bg-red-50 transition-colors" data-recipe-id="{{ $recipe->id }}">
-                                        @if($isFav)
-                                            <svg class="w-5 h-5 favorite-icon text-red-500" data-state="filled" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6.01 4.01 4 6.5 4c1.74 0 3.41.81 4.5 2.09C12.09 4.81 13.76 4 15.5 4 17.99 4 20 6.01 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                                            </svg>
-                                        @else
-                                            <svg class="w-5 h-5 favorite-icon text-gray-400" data-state="empty" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                            </svg>
-                                        @endif
-                                </button>
-                            </form>
-                        @endauth
-                    </div>
-                </article>
+                <x-recipe-card :recipe="$recipe" />
             @empty
-                <p>Рецептов пока нет.</p>
+                <div class="col-span-full text-center py-12">
+                    <p class="text-gray-500 text-lg">Рецептов пока нет.</p>
+                    @auth
+                        <a href="{{ route('recipes.create') }}" class="mt-4 inline-block bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition">
+                            Создать первый рецепт
+                        </a>
+                    @endauth
+                </div>
             @endforelse
         </div>
 
-        <div class="mt-8">
-            {{ $recipes->links() }}
-        </div>
+        <!-- Пагинация -->
+        @if($recipes->hasPages())
+            <div class="mt-8">
+                {{ $recipes->links() }}
+            </div>
+        @endif
     </div>
 @endsection

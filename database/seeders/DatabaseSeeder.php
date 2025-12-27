@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call([
+            CategorySeeder::class,
             RecipeSeeder::class,
             ReviewSeeder::class,
             FavoriteSeeder::class,

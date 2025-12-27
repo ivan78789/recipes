@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Главная')
+@section('title', 'MyRecipes')
 
 @section('content')
     <section class="relative h-screen overflow-hidden">
@@ -60,32 +60,143 @@
 
     @php
         use App\Models\Recipe;
-        $recipes = Recipe::with('reviews')->latest()->take(8)->get();
+        use App\Models\Category;
+        
+        $breakfastCategory = Category::where('slug', 'zavtrak')->first();
+        $lunchCategory = Category::where('slug', 'obed')->first();
+        $dinnerCategory = Category::where('slug', 'uzhin')->first();
+        
+        $breakfastRecipes = $breakfastCategory 
+            ? Recipe::where('category_id', $breakfastCategory->id)->with(['category', 'reviews', 'user'])->latest()->take(4)->get()
+            : collect();
+        
+        $lunchRecipes = $lunchCategory 
+            ? Recipe::where('category_id', $lunchCategory->id)->with(['category', 'reviews', 'user'])->latest()->take(4)->get()
+            : collect();
+        
+        $dinnerRecipes = $dinnerCategory 
+            ? Recipe::where('category_id', $dinnerCategory->id)->with(['category', 'reviews', 'user'])->latest()->take(4)->get()
+            : collect();
+        
+        $topRatedRecipes = Recipe::with(['category', 'reviews', 'user'])
+            ->withCount('reviews')
+            ->having('reviews_count', '>', 0)
+            ->get()
+            ->sortByDesc(function($recipe) {
+                return $recipe->reviews->avg('rating');
+            })
+            ->take(4);
+        
+        $favoriteRecipes = Auth::check() 
+            ? Auth::user()->favorites()->with(['category', 'reviews', 'user'])->latest()->take(4)->get()
+            : collect();
     @endphp
 
-    <section class="py-12 bg-white">
-        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            @foreach($recipes as $recipe)
-                <div class="recipe-card p-4 flex flex-col items-center">
-                    <img src="{{ $recipe->image ?? asset('img/default-dish.png') }}" alt="{{ $recipe->title }}" class="w-40 h-40 object-cover rounded-xl mb-4">
-                    <h3 class="font-bold text-lg mb-2">{{ $recipe->title }}</h3>
-                    <p class="text-gray-600 mb-2">{{ $recipe->description }}</p>
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="text-yellow-500 font-bold">
-                            @php
-                                $avg = $recipe->reviews->avg('rating');
-                            @endphp
-                            {{ $avg ? number_format($avg, 1) : '—' }} ★
-                        </span>
-                        <span class="text-xs text-gray-400">({{ $recipe->reviews->count() }} отзывов)</span>
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <!-- На завтрак -->
+            @if($breakfastRecipes->count() > 0)
+                <div class="mb-16">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center gap-4">
+                            <img src="{{ asset('img/image/zavtrack.jpg') }}" alt="Завтрак" class="w-16 h-16 rounded-xl object-cover">
+                            <h2 class="text-3xl font-bold text-gray-900">На завтрак</h2>
+                        </div>
+                        @if($breakfastCategory)
+                            <a href="{{ route('recipes.category', $breakfastCategory) }}" class="text-red-500 hover:text-red-600 font-medium">
+                                Смотреть все →
+                            </a>
+                        @endif
                     </div>
-                    <a href="{{ route('recipes.show', $recipe) }}" class="mt-auto bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition">Подробнее</a>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        @foreach($breakfastRecipes as $recipe)
+                            <x-recipe-card :recipe="$recipe" />
+                        @endforeach
+                    </div>
                 </div>
-            @endforeach
+            @endif
+
+            <!-- На обед -->
+            @if($lunchRecipes->count() > 0)
+                <div class="mb-16">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center gap-4">
+                            <img src="{{ asset('img/image/obed.jpg') }}" alt="Обед" class="w-16 h-16 rounded-xl object-cover">
+                            <h2 class="text-3xl font-bold text-gray-900">На обед</h2>
+                        </div>
+                        @if($lunchCategory)
+                            <a href="{{ route('recipes.category', $lunchCategory) }}" class="text-red-500 hover:text-red-600 font-medium">
+                                Смотреть все →
+                            </a>
+                        @endif
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        @foreach($lunchRecipes as $recipe)
+                            <x-recipe-card :recipe="$recipe" />
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            <!-- На ужин -->
+            @if($dinnerRecipes->count() > 0)
+                <div class="mb-16">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center gap-4">
+                            <img src="{{ asset('img/image/yzhin.jpg') }}" alt="Ужин" class="w-16 h-16 rounded-xl object-cover">
+                            <h2 class="text-3xl font-bold text-gray-900">На ужин</h2>
+                        </div>
+                        @if($dinnerCategory)
+                            <a href="{{ route('recipes.category', $dinnerCategory) }}" class="text-red-500 hover:text-red-600 font-medium">
+                                Смотреть все →
+                            </a>
+                        @endif
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        @foreach($dinnerRecipes as $recipe)
+                            <x-recipe-card :recipe="$recipe" />
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            <!-- Лучшее по отзывам -->
+            @if($topRatedRecipes->count() > 0)
+                <div class="mb-16">
+                    <div class="flex items-center justify-between mb-8">
+                        <h2 class="text-3xl font-bold text-gray-900">Лучшее по отзывам</h2>
+                        <a href="{{ route('recipes.popular') }}" class="text-red-500 hover:text-red-600 font-medium">
+                            Смотреть все →
+                        </a>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        @foreach($topRatedRecipes as $recipe)
+                            <x-recipe-card :recipe="$recipe" />
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            <!-- Ваше любимое -->
+            @auth
+                @if($favoriteRecipes->count() > 0)
+                    <div class="mb-16">
+                        <div class="flex items-center justify-between mb-8">
+                            <h2 class="text-3xl font-bold text-gray-900">Ваше любимое</h2>
+                            <a href="{{ route('recipes.favorites') }}" class="text-red-500 hover:text-red-600 font-medium">
+                                Смотреть все →
+                            </a>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            @foreach($favoriteRecipes as $recipe)
+                                <x-recipe-card :recipe="$recipe" />
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            @endauth
         </div>
     </section>
 
-    <style>
 
-    </style>
 @endsection

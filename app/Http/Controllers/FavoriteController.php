@@ -35,7 +35,7 @@ class FavoriteController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        $recipes = $user->favorites()->latest()->paginate(12);
+        $recipes = $user->favorites()->with(['category', 'reviews', 'user'])->latest()->paginate(12);
         return view('recipes.favorites', compact('recipes'));
     }
 }

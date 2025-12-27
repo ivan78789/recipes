@@ -13,21 +13,61 @@ class ReviewController extends Controller
     {
         $data = $request->validate([
             'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'nullable|string',
+            'comment' => 'nullable|string|max:1000',
         ]);
 
-        $data['user_id'] = Auth::id();
-        $data['recipe_id'] = $recipe->id ?? $recipe->getKey();
+        $user = Auth::user();
+        
+        // Проверяем, есть ли уже отзыв от этого пользователя
+        $existingReview = Review::where('recipe_id', $recipe->id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if ($existingReview) {
+            // Обновляем существующий отзыв
+            $existingReview->update($data);
+            return back()->with('status', 'review-updated');
+        }
+
+        $data['user_id'] = $user->id;
+        $data['recipe_id'] = $recipe->id;
 
         Review::create($data);
 
-        return back();
+        return back()->with('status', 'review-created');
+    }
+
+    public function edit(Review $review)
+    {
+        if ($review->user_id !== Auth::id()) {
+            abort(403);
+        }
+        return view('reviews.edit', compact('review'));
+    }
+
+    public function update(Request $request, Review $review)
+    {
+        if ($review->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $data = $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'nullable|string|max:1000',
+        ]);
+
+        $review->update($data);
+
+        return redirect()->route('recipes.show', $review->recipe)->with('status', 'review-updated');
     }
 
     public function destroy(Review $review)
     {
+        if ($review->user_id !== Auth::id()) {
+            abort(403);
+        }
         $review->delete();
-        return back();
+        return back()->with('status', 'review-deleted');
     }
 
     public function my()
