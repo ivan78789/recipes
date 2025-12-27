@@ -11,10 +11,10 @@
 
             <div class="mb-6">
                 <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Название рецепта *</label>
-                <input type="text" 
-                       id="title" 
-                       name="title" 
-                       value="{{ old('title') }}" 
+                <input type="text"
+                       id="title"
+                       name="title"
+                       value="{{ old('title') }}"
                        required
                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500">
                 @error('title')
@@ -24,8 +24,8 @@
 
             <div class="mb-6">
                 <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">Категория</label>
-                <select id="category_id" 
-                        name="category_id" 
+                <select id="category_id"
+                        name="category_id"
                         class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500">
                     <option value="">Выберите категорию</option>
                     @foreach($categories ?? [] as $category)
@@ -41,8 +41,8 @@
 
             <div class="mb-6">
                 <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Краткое описание</label>
-                <textarea id="description" 
-                          name="description" 
+                <textarea id="description"
+                          name="description"
                           rows="3"
                           class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500">{{ old('description') }}</textarea>
                 @error('description')
@@ -52,8 +52,8 @@
 
             <div class="mb-6">
                 <label for="body" class="block text-sm font-medium text-gray-700 mb-2">Рецепт *</label>
-                <textarea id="body" 
-                          name="body" 
+                <textarea id="body"
+                          name="body"
                           rows="10"
                           required
                           class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500">{{ old('body') }}</textarea>
@@ -64,9 +64,9 @@
 
             <div class="mb-6">
                 <label for="image" class="block text-sm font-medium text-gray-700 mb-2">Изображение</label>
-                <input type="file" 
-                       id="image" 
-                       name="image" 
+                <input type="file"
+                       id="image"
+                       name="image"
                        accept="image/*"
                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500">
                 @error('image')

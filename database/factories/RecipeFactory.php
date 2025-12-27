@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Recipe;
 use App\Models\User;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -13,16 +14,58 @@ class RecipeFactory extends Factory
 
     public function definition()
     {
-        $title = $this->faker->sentence(3);
+        $titles = [
+            'Омлет с сыром и зеленью',
+            'Паста карбонара',
+            'Салат Цезарь',
+            'Греческий салат',
+            'Борщ украинский',
+            'Плов узбекский',
+            'Пицца Маргарита',
+            'Стейк из говядины',
+            'Рыба на гриле',
+            'Куриные крылышки',
+            'Блины с творогом',
+            'Оладьи с яблоками',
+            'Сырники',
+            'Яичница с беконом',
+            'Тосты с авокадо',
+            'Сэндвич с курицей',
+            'Лазанья',
+            'Рататуй',
+            'Ризотто с грибами',
+            'Суп-пюре из тыквы',
+        ];
+
+        $title = $this->faker->randomElement($titles);
+        
+        $descriptions = [
+            'Вкусное и сытное блюдо для всей семьи',
+            'Классический рецепт с современными нотками',
+            'Простое в приготовлении, но очень вкусное блюдо',
+            'Идеально подходит для завтрака',
+            'Сытный обед, который понравится всем',
+            'Романтический ужин на двоих',
+            'Домашний рецепт от бабушки',
+            'Ресторанное качество в домашних условиях',
+            'Быстрое и простое блюдо',
+            'Праздничный вариант для особых случаев',
+        ];
+
+        $bodies = [
+            "Ингредиенты:\n- 200г основного продукта\n- 100г дополнительных ингредиентов\n- Специи по вкусу\n\nПриготовление:\n1. Подготовьте все ингредиенты\n2. Начните готовить по шагам\n3. Подавайте горячим",
+            "Шаг 1: Подготовка\nТщательно вымойте и нарежьте все ингредиенты.\n\nШаг 2: Готовка\nНагрейте сковороду и обжарьте ингредиенты.\n\nШаг 3: Подача\nПодавайте блюдо горячим с гарниром.",
+            "Этот рецепт требует внимания к деталям. Следуйте инструкциям точно, и у вас получится отличное блюдо. Время приготовления: 30 минут.",
+        ];
 
         return [
             'title' => $title,
             'slug' => Str::slug($title) . '-' . Str::random(5),
-            'description' => $this->faker->paragraph(),
-            'body' => $this->faker->text(300),
-            'user_id' => User::inRandomOrder()->first()->id ?? 1,
-            'category_id' => null,
-            'image' => null,
+            'description' => $this->faker->randomElement($descriptions),
+            'body' => $this->faker->randomElement($bodies),
+            'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
+            'category_id' => Category::inRandomOrder()->first()->id ?? null,
+            'image' => '/img/image/reciepts-card.jpg', // Используем существующее изображение
         ];
     }
 }

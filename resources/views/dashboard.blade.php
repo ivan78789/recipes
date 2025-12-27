@@ -5,7 +5,6 @@
 
 @section('content')
     <div class="flex flex-row gap-8">
-        @include('components.profile-sidebar')
         <div id="profile-main" class="flex-1">
             @auth
                 <div class="bg-white rounded-xl shadow p-8">

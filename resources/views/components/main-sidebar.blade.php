@@ -3,8 +3,8 @@
     <aside class="main-sidebar">
         <div class="sidebar-header">
             <div class="sidebar-logo">
-                <div class="logo-icon">{{ config('app.name', 'MySite') }}</div>
-                <div class="logo-text">Образовательная платформа</div>
+                <div class="logo-icon">{{ config('app.name', 'MyRecipes') }}</div>
+                <div class="logo-text">Профиль MyRecipes</div>
             </div>
         </div>
 

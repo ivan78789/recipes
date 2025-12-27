@@ -159,7 +159,10 @@ class RecipeController extends Controller
 
     public function my()
     {
-        $recipes = Recipe::where('user_id', Auth::id())->latest()->paginate(12);
+        $recipes = Recipe::where('user_id', Auth::id())
+            ->with(['category', 'reviews', 'user'])
+            ->latest()
+            ->paginate(12);
         return view('recipes.my', compact('recipes'));
     }
 }

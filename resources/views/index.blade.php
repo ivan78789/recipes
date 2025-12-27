@@ -92,19 +92,28 @@
             : collect();
     @endphp
 
-    <section class="py-16 bg-gray-50">
+    <section class="py-16 bg-gradient-to-b from-gray-50 to-white">
         <div class="max-w-7xl mx-auto px-4">
             <!-- На завтрак -->
             @if($breakfastRecipes->count() > 0)
-                <div class="mb-16">
-                    <div class="flex items-center justify-between mb-8">
+                <div class="mb-20">
+                    <div class="flex items-center justify-between mb-10">
                         <div class="flex items-center gap-4">
-                            <img src="{{ asset('img/image/zavtrack.jpg') }}" alt="Завтрак" class="w-16 h-16 rounded-xl object-cover">
-                            <h2 class="text-3xl font-bold text-gray-900">На завтрак</h2>
+                            <div class="relative">
+                                <img src="{{ asset('img/image/zavtrack.jpg') }}" alt="Завтрак" class="w-20 h-20 rounded-2xl object-cover shadow-lg">
+                                <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-2xl"></div>
+                            </div>
+                            <div>
+                                <h2 class="text-4xl font-bold text-gray-900 mb-1">На завтрак</h2>
+                                <p class="text-gray-600">Начните день с вкусного завтрака</p>
+                            </div>
                         </div>
                         @if($breakfastCategory)
-                            <a href="{{ route('recipes.category', $breakfastCategory) }}" class="text-red-500 hover:text-red-600 font-medium">
-                                Смотреть все →
+                            <a href="{{ route('recipes.category', $breakfastCategory) }}" class="group flex items-center gap-2 text-red-500 hover:text-red-600 font-semibold transition">
+                                <span>Смотреть все</span>
+                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                </svg>
                             </a>
                         @endif
                     </div>
@@ -118,15 +127,24 @@
 
             <!-- На обед -->
             @if($lunchRecipes->count() > 0)
-                <div class="mb-16">
-                    <div class="flex items-center justify-between mb-8">
+                <div class="mb-20">
+                    <div class="flex items-center justify-between mb-10">
                         <div class="flex items-center gap-4">
-                            <img src="{{ asset('img/image/obed.jpg') }}" alt="Обед" class="w-16 h-16 rounded-xl object-cover">
-                            <h2 class="text-3xl font-bold text-gray-900">На обед</h2>
+                            <div class="relative">
+                                <img src="{{ asset('img/image/obed.jpg') }}" alt="Обед" class="w-20 h-20 rounded-2xl object-cover shadow-lg">
+                                <div class="absolute inset-0 bg-gradient-to-br from-green-400/20 to-emerald-500/20 rounded-2xl"></div>
+                            </div>
+                            <div>
+                                <h2 class="text-4xl font-bold text-gray-900 mb-1">На обед</h2>
+                                <p class="text-gray-600">Сытные и вкусные блюда для обеда</p>
+                            </div>
                         </div>
                         @if($lunchCategory)
-                            <a href="{{ route('recipes.category', $lunchCategory) }}" class="text-red-500 hover:text-red-600 font-medium">
-                                Смотреть все →
+                            <a href="{{ route('recipes.category', $lunchCategory) }}" class="group flex items-center gap-2 text-red-500 hover:text-red-600 font-semibold transition">
+                                <span>Смотреть все</span>
+                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                </svg>
                             </a>
                         @endif
                     </div>
@@ -140,15 +158,24 @@
 
             <!-- На ужин -->
             @if($dinnerRecipes->count() > 0)
-                <div class="mb-16">
-                    <div class="flex items-center justify-between mb-8">
+                <div class="mb-20">
+                    <div class="flex items-center justify-between mb-10">
                         <div class="flex items-center gap-4">
-                            <img src="{{ asset('img/image/yzhin.jpg') }}" alt="Ужин" class="w-16 h-16 rounded-xl object-cover">
-                            <h2 class="text-3xl font-bold text-gray-900">На ужин</h2>
+                            <div class="relative">
+                                <img src="{{ asset('img/image/yzhin.jpg') }}" alt="Ужин" class="w-20 h-20 rounded-2xl object-cover shadow-lg">
+                                <div class="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-indigo-500/20 rounded-2xl"></div>
+                            </div>
+                            <div>
+                                <h2 class="text-4xl font-bold text-gray-900 mb-1">На ужин</h2>
+                                <p class="text-gray-600">Завершите день изысканным ужином</p>
+                            </div>
                         </div>
                         @if($dinnerCategory)
-                            <a href="{{ route('recipes.category', $dinnerCategory) }}" class="text-red-500 hover:text-red-600 font-medium">
-                                Смотреть все →
+                            <a href="{{ route('recipes.category', $dinnerCategory) }}" class="group flex items-center gap-2 text-red-500 hover:text-red-600 font-semibold transition">
+                                <span>Смотреть все</span>
+                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                </svg>
                             </a>
                         @endif
                     </div>
@@ -162,12 +189,27 @@
 
             <!-- Лучшее по отзывам -->
             @if($topRatedRecipes->count() > 0)
-                <div class="mb-16">
-                    <div class="flex items-center justify-between mb-8">
-                        <h2 class="text-3xl font-bold text-gray-900">Лучшее по отзывам</h2>
-                        <a href="{{ route('recipes.popular') }}" class="text-red-500 hover:text-red-600 font-medium">
-                            Смотреть все →
-                        </a>
+                <div class="mb-20">
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-3xl p-8 mb-10">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h2 class="text-4xl font-bold text-gray-900 mb-1">Лучшее по отзывам</h2>
+                                    <p class="text-gray-600">Топ рецептов, которые понравились пользователям</p>
+                                </div>
+                            </div>
+                            <a href="{{ route('recipes.popular') }}" class="group flex items-center gap-2 text-red-500 hover:text-red-600 font-semibold transition">
+                                <span>Смотреть все</span>
+                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                </svg>
+                            </a>
+                        </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         @foreach($topRatedRecipes as $recipe)
@@ -180,12 +222,27 @@
             <!-- Ваше любимое -->
             @auth
                 @if($favoriteRecipes->count() > 0)
-                    <div class="mb-16">
-                        <div class="flex items-center justify-between mb-8">
-                            <h2 class="text-3xl font-bold text-gray-900">Ваше любимое</h2>
-                            <a href="{{ route('recipes.favorites') }}" class="text-red-500 hover:text-red-600 font-medium">
-                                Смотреть все →
-                            </a>
+                    <div class="mb-20">
+                        <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-3xl p-8 mb-10">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-16 h-16 bg-gradient-to-br from-red-400 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
+                                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-4xl font-bold text-gray-900 mb-1">Ваше любимое</h2>
+                                        <p class="text-gray-600">Рецепты, которые вы добавили в избранное</p>
+                                    </div>
+                                </div>
+                                <a href="{{ route('recipes.favorites') }}" class="group flex items-center gap-2 text-red-500 hover:text-red-600 font-semibold transition">
+                                    <span>Смотреть все</span>
+                                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                             @foreach($favoriteRecipes as $recipe)
