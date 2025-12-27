@@ -31,10 +31,10 @@
 
         <!-- Общий текст -->
         <div class="absolute inset-0 z-40 flex flex-col items-center justify-center text-white px-4">
-            <h2 class="text-5xl md:text-8xl font-bold mb-6 text-center drop-shadow-2xl animate-fade-in-up">
+            <h2 class="text-5xl md:text-8xl font-bold mb-6 text-center drop-shadow-2xl opacity-100">
                 Добро пожаловать
             </h2>
-            <p class="text-xl md:text-3xl text-center max-w-3xl drop-shadow-lg animate-fade-in-up animation-delay-300">
+            <p class="text-xl md:text-3xl text-center max-w-3xl drop-shadow-lg opacity-100 animation-delay-300">
                 Современные технологии для вашего бизнеса
             </p>
         </div>
@@ -45,11 +45,11 @@
             animation: fadeInUp 1s ease-out forwards;
             opacity: 0;
         }
-        
+
         .animation-delay-300 {
             animation-delay: 0.3s;
         }
-        
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -60,12 +60,12 @@
                 transform: translateY(0);
             }
         }
-        
+
         /* Плавная анимация для перехода слайдов */
         .swiper-slide {
             animation: slideFadeIn 2s ease-out;
         }
-        
+
         @keyframes slideFadeIn {
             from {
                 opacity: 0.8;

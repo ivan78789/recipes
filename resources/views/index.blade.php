@@ -28,17 +28,16 @@
         </div>
 
         <div class="absolute inset-0 z-40 flex flex-col items-center justify-center text-white px-4">
-            <h2 class="text-5xl md:text-8xl font-bold mb-8 text-center drop-shadow-2xl animate-fade-in-up">
+            <h2 class="text-5xl md:text-8xl font-bold mb-8 text-center drop-shadow-2xl opacity-100">
                 Делитесь рецептами с миром!
             </h2>
-            <p
-                class="text-xl md:text-3xl text-center max-w-3xl mb-12 drop-shadow-lg animate-fade-in-up animation-delay-200">
+            <p class="text-xl md:text-3xl text-center max-w-3xl mb-12 drop-shadow-lg opacity-100 animation-delay-200">
                 Присоединяйтесь к сообществу кулинаров и делитесь своими шедеврами
             </p>
-            <a href="/recipes/create" class="group relative inline-flex items-center gap-3 bg-red-500 text-white 
-                  px-8 py-4 rounded-full hover:bg-red-600 transition-all duration-300
-                  shadow-md hover:shadow-lg animate-fade-in-up animation-delay-400
-                  transform hover:-translate-y-0.5">
+            <a href="{{ route('recipes.create') }}" class="group relative inline-flex items-center gap-3 bg-red-500 text-white
+                px-8 py-4 rounded-full hover:bg-red-600 transition-all duration-300
+                shadow-md hover:shadow-lg animation-delay-400
+                transform hover:-translate-y-0.5">
 
                 <svg class="w-6 h-6 group-hover:scale-110 transition-transform duration-300" fill="none"
                     stroke="currentColor" viewBox="0 0 24 24">
@@ -47,13 +46,13 @@
 
                 <span class="text-lg font-semibold">Добавить рецепт</span>
 
-                <span class="absolute inset-0 rounded-full bg-red-400 opacity-0 
+                <span class="absolute inset-0 rounded-full bg-red-400 opacity-0
                          group-hover:opacity-30 blur-md transition-opacity duration-300 -z-10">
                 </span>
             </a>
-            <a href="/recipes" class="mt-8 text-white/80 hover:text-white text-lg 
-                                                                 underline decoration-dotted underline-offset-4 
-                                                                 transition-colors animate-fade-in-up animation-delay-600">
+            <a href="/recipes" class="mt-8 text-white/80 hover:text-white text-lg
+                                                                 underline decoration-dotted underline-offset-4
+                                                                 transition-colors animation-delay-600">
                 Или просмотрите рецепты других пользователей →
             </a>
         </div>
