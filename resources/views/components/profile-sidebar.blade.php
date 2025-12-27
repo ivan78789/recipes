@@ -1,6 +1,6 @@
 @auth
     @php /** @var \App\Models\User $user */ $user = Auth::user(); @endphp
-    <aside class="fixed top-24 right-8 w-72 bg-white rounded-2xl shadow-lg border border-gray-100 z-40 overflow-hidden">
+    <aside id="profile-sidebar" class="md:sticky md:top-24 md:self-start w-full md:w-72 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
         <!-- Заголовок профиля -->
         <div class="bg-gradient-to-br from-red-500 to-red-600 p-6 text-white">
             <div class="flex flex-col items-center">
@@ -18,11 +18,11 @@
         <div class="px-4 py-4 bg-gray-50 border-b border-gray-100">
             <div class="grid grid-cols-2 gap-3">
                 <div class="text-center">
-                    <div class="text-2xl font-bold text-gray-800">{{ $user->recipes()->count() }}</div>
+                    <div class="text-2xl font-bold text-gray-800" data-recipes-count>{{ $user->recipes()->count() }}</div>
                     <div class="text-xs text-gray-500">Рецептов</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-2xl font-bold text-gray-800">{{ $user->favorites()->count() }}</div>
+                    <div class="text-2xl font-bold text-gray-800" data-fav-count>{{ $user->favorites()->count() }}</div>
                     <div class="text-xs text-gray-500">Избранное</div>
                 </div>
             </div>

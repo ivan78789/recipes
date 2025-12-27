@@ -1,4 +1,5 @@
 import "./bootstrap";
+import "./favorites";
 import Alpine from "alpinejs";
 import Swiper from "swiper";
 import { Pagination, Autoplay, EffectFade } from "swiper/modules";

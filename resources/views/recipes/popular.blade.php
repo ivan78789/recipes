@@ -19,17 +19,19 @@
 
                         @auth
                             @php
-                                $isFav = Auth::user()->favorites()->where('recipe_id', $recipe->id)->exists();
+                                /** @var \App\Models\User $user */
+                                $user = Auth::user();
+                                $isFav = $user->favorites()->where('recipe_id', $recipe->id)->exists();
                             @endphp
-                            <form action="{{ route('recipes.favorite.toggle', $recipe) }}" method="POST">
+                            <form action="{{ route('recipes.favorite.toggle', $recipe) }}" method="POST" class="favorite-form" data-recipe-id="{{ $recipe->id }}">
                                 @csrf
-                                <button type="submit" title="Избранное" class="p-2 rounded-full hover:bg-red-50 transition-colors">
+                                <button type="button" title="Избранное" class="favorite-btn p-2 rounded-full hover:bg-red-50 transition-colors" data-recipe-id="{{ $recipe->id }}">
                                     @if($isFav)
-                                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-5 h-5 favorite-icon text-red-500" data-state="filled" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6.01 4.01 4 6.5 4c1.74 0 3.41.81 4.5 2.09C12.09 4.81 13.76 4 15.5 4 17.99 4 20 6.01 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                                         </svg>
                                     @else
-                                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-5 h-5 favorite-icon text-gray-400" data-state="empty" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                         </svg>
                                     @endif
