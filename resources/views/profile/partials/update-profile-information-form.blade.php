@@ -1,3 +1,8 @@
+@php
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
+@endphp
+
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">

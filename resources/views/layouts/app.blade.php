@@ -16,6 +16,11 @@
 <body class="">
     @include('components.header')
 
+    {{-- spacer: отступ под фиксированную шапку на всех страницах, кроме главной (где хедер накладывается на геро) --}}
+    @unless(request()->is('/'))
+        <div class="h-28 md:h-32"></div>
+    @endunless
+
     <main>
         @yield('content')
     </main>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Recipe;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,8 +17,19 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
+        $user = $request->user();
+        $recipes = [];
+        $favorites = [];
+        if ($user) {
+            $recipes = Recipe::where('user_id', $user->id)->latest()->get();
+            // favorites placeholder — implement later
+            $favorites = [];
+        }
+
+        return view('dashboard', [
+            'user' => $user,
+            'recipes' => $recipes,
+            'favorites' => $favorites,
         ]);
     }
 
@@ -56,5 +68,20 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Upload user avatar.
+     */
+    public function avatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image|max:2048',
+        ]);
+        $user = $request->user();
+        $path = $request->file('avatar')->store('avatars', 'public');
+        $user->avatar_url = '/storage/' . $path;
+        $user->save();
+        return back()->with('status', 'avatar-updated');
     }
 }

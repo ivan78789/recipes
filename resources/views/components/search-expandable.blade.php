@@ -59,7 +59,6 @@
     }
 }" class="relative">
     
-    <!-- Кнопка поиска (когда свёрнуто) -->
     <button x-show="!expanded" @click="toggleSearch"
             class="text-gray-700 hover:text-red-500 transition-colors relative
                    after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 
@@ -71,29 +70,23 @@
         </svg>
     </button>
     
-    <!-- Когда развёрнуто - скрываем кнопку и занимаем место -->
-<div x-show="expanded" x-transition:enter="transition-opacity duration-300 ease-out"
-    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-    x-transition:leave="transition-opacity duration-200 ease-in" x-transition:leave-start="opacity-100"
-    x-transition:leave-end="opacity-0" class="flex-grow max-w-md">
+<div x-show="expanded" 
+    x-transition:enter="transition-opacity duration-300 ease-out"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition-opacity duration-200 ease-in"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    class="w-full max-w-sm mx-auto">
         <div class="relative flex items-center">
-            <!-- Поле ввода (занимает всю ширину) -->
-            <div class="flex-grow flex items-center bg-white rounded-full border border-gray-300 
-                       shadow-sm px-4 py-2">
+                 <div class="flex-grow flex items-center bg-white rounded-full border border-gray-300 
+                      shadow-sm px-4 py-2">
+                  @include('components.icons.search', ['class' => 'w-5 h-5 text-gray-400 mr-2 flex-shrink-0'])
+                  <input x-model="searchQuery" @click="openFilters($event)" x-ref="searchInput"
+                      type="text" placeholder="Поиск рецептов..." 
+                      class="flex-grow outline-none bg-transparent text-gray-800 
+                          placeholder-gray-400 min-w-0 max-w-[220px]">
                 
-                <!-- Иконка поиска -->
-                <svg class="w-5 h-5 text-gray-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
-                
-                <!-- Поле ввода -->
-                <input x-model="searchQuery" @click="openFilters($event)" x-ref="searchInput"
-                       type="text" placeholder="Поиск рецептов..." 
-                       class="flex-grow outline-none bg-transparent text-gray-800 
-                              placeholder-gray-400 min-w-0">
-                
-                <!-- Кнопка фильтров -->
                 <button @click="openFilters($event)" 
                         :class="showFilters ? 'text-red-500' : 'text-gray-400 hover:text-red-500'"
                         class="ml-2 p-1 transition-colors flex-shrink-0">
@@ -113,7 +106,6 @@
                 </button>
             </div>
             
-            <!-- Модалка фильтров -->
             <div x-show="showFilters" x-transition
                  @click.stop
                  class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl 
@@ -127,7 +119,6 @@
                 </div>
                 
                 <div class="space-y-4">
-                    <!-- Категория -->
                     <div>
                         <label class="block text-sm text-gray-600 mb-1">Категория</label>
                         <select x-model="filters.category" 
@@ -140,7 +131,6 @@
                         </select>
                     </div>
                     
-                    <!-- Время приготовления -->
                     <div>
                         <label class="block text-sm text-gray-600 mb-1">Время (мин)</label>
                         <select x-model="filters.time" 
@@ -152,7 +142,6 @@
                         </select>
                     </div>
                     
-                    <!-- Сложность -->
                     <div>
                         <label class="block text-sm text-gray-600 mb-1">Сложность</label>
                         <div class="flex gap-2">
@@ -181,7 +170,6 @@
                     </div>
                 </div>
                 
-                <!-- Кнопки -->
                 <div class="flex gap-2 mt-6">
                     <button @click="clearFilters" 
                             class="flex-1 py-2 text-sm border border-gray-300 rounded-lg 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Recipe;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
@@ -15,17 +16,23 @@ class ReviewController extends Controller
             'comment' => 'nullable|string',
         ]);
 
-        $data['user_id'] = $request->user()?->id;
-        $data['recipe_id'] = $recipe->id;
+        $data['user_id'] = Auth::id();
+        $data['recipe_id'] = $recipe->id ?? $recipe->getKey();
 
         Review::create($data);
 
         return back();
     }
 
-    public function destroy(Recipe $recipe, Review $review)
+    public function destroy(Review $review)
     {
         $review->delete();
         return back();
+    }
+
+    public function my()
+    {
+        $reviews = Review::where('user_id', Auth::id())->latest()->paginate(12);
+        return view('reviews.my', compact('reviews'));
     }
 }

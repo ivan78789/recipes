@@ -5,6 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Review
+ *
+ * @property int $id
+ * @property int $recipe_id
+ * @property int $user_id
+ * @property int $rating
+ * @property string|null $comment
+ */
 class Review extends Model
 {
     use HasFactory;

@@ -5,6 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Recipe
+ *
+ * @property int $id
+ * @property string $title
+ * @property string|null $description
+ * @property string|null $body
+ * @property int $user_id
+ */
 class Recipe extends Model
 {
     use HasFactory;

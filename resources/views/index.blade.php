@@ -58,6 +58,33 @@
         </div>
     </section>
 
+    @php
+        use App\Models\Recipe;
+        $recipes = Recipe::with('reviews')->latest()->take(8)->get();
+    @endphp
+
+    <section class="py-12 bg-white">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            @foreach($recipes as $recipe)
+                <div class="recipe-card p-4 flex flex-col items-center">
+                    <img src="{{ $recipe->image ?? asset('img/default-dish.png') }}" alt="{{ $recipe->title }}" class="w-40 h-40 object-cover rounded-xl mb-4">
+                    <h3 class="font-bold text-lg mb-2">{{ $recipe->title }}</h3>
+                    <p class="text-gray-600 mb-2">{{ $recipe->description }}</p>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-yellow-500 font-bold">
+                            @php
+                                $avg = $recipe->reviews->avg('rating');
+                            @endphp
+                            {{ $avg ? number_format($avg, 1) : '—' }} ★
+                        </span>
+                        <span class="text-xs text-gray-400">({{ $recipe->reviews->count() }} отзывов)</span>
+                    </div>
+                    <a href="{{ route('recipes.show', $recipe) }}" class="mt-auto bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition">Подробнее</a>
+                </div>
+            @endforeach
+        </div>
+    </section>
+
     <style>
 
     </style>

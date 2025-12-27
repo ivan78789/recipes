@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Recipe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RecipeController extends Controller
 {
@@ -39,7 +40,7 @@ class RecipeController extends Controller
             'body' => 'required|string',
         ]);
 
-        $data['user_id'] = $request->user()?->id;
+        $data['user_id'] = Auth::id();
 
         $recipe = Recipe::create($data);
 
@@ -73,5 +74,11 @@ class RecipeController extends Controller
     {
         $recipe->delete();
         return redirect()->route('recipes.index');
+    }
+
+    public function my()
+    {
+        $recipes = Recipe::where('user_id', Auth::id())->latest()->paginate(12);
+        return view('recipes.my', compact('recipes'));
     }
 }
