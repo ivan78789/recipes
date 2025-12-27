@@ -13,6 +13,11 @@ Route::get('/', function () {
     return view('index');
 });
 
+// Dashboard (возвращён для совместимости с редиректом после регистрации)
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 // Рецепты
 Route::prefix('recipes')->group(function () {
@@ -22,7 +27,7 @@ Route::prefix('recipes')->group(function () {
     Route::get('/favorites', [RecipeController::class, 'favorites'])->name('recipes.favorites');
     Route::get('/category/{category:slug}', [RecipeController::class, 'category'])->name('recipes.category');
     Route::get('/{recipe:slug}', [RecipeController::class, 'show'])->name('recipes.show'); // Детальная страница
-    
+
     // CRUD (только для авторизованных)
     Route::middleware('auth')->group(function () {
         Route::get('/create', [RecipeController::class, 'create'])->name('recipes.create');
@@ -30,14 +35,14 @@ Route::prefix('recipes')->group(function () {
         Route::get('/{recipe:slug}/edit', [RecipeController::class, 'edit'])->name('recipes.edit');
         Route::put('/{recipe:slug}', [RecipeController::class, 'update'])->name('recipes.update');
         Route::delete('/{recipe:slug}', [RecipeController::class, 'destroy'])->name('recipes.destroy');
-        
+
         // Отзывы
         Route::post('/{recipe:slug}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
         Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
-        
+
         // Оценки
         Route::post('/{recipe:slug}/rate', [RatingController::class, 'rate'])->name('recipes.rate');
-        
+
         // Избранное
         Route::post('/{recipe:slug}/favorite', [FavoriteController::class, 'toggle'])->name('recipes.favorite.toggle');
     });
@@ -50,10 +55,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/avatar', [ProfileController::class, 'avatar'])->name('profile.avatar');
     Route::get('/recipes/my', [RecipeController::class, 'my'])->name('recipes.my');
     Route::get('/reviews/my', [ReviewController::class, 'my'])->name('reviews.my');
-    
+
     // Пароль пользователя
     Route::patch('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
-    
+
     // Удаление пользователя
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
