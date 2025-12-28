@@ -61,23 +61,23 @@
     @php
         use App\Models\Recipe;
         use App\Models\Category;
-        
+
         $breakfastCategory = Category::where('slug', 'zavtrak')->first();
         $lunchCategory = Category::where('slug', 'obed')->first();
         $dinnerCategory = Category::where('slug', 'uzhin')->first();
-        
-        $breakfastRecipes = $breakfastCategory 
+
+        $breakfastRecipes = $breakfastCategory
             ? Recipe::where('category_id', $breakfastCategory->id)->with(['category', 'reviews', 'user'])->latest()->take(4)->get()
             : collect();
-        
-        $lunchRecipes = $lunchCategory 
+
+        $lunchRecipes = $lunchCategory
             ? Recipe::where('category_id', $lunchCategory->id)->with(['category', 'reviews', 'user'])->latest()->take(4)->get()
             : collect();
-        
-        $dinnerRecipes = $dinnerCategory 
+
+        $dinnerRecipes = $dinnerCategory
             ? Recipe::where('category_id', $dinnerCategory->id)->with(['category', 'reviews', 'user'])->latest()->take(4)->get()
             : collect();
-        
+
         $topRatedRecipes = Recipe::with(['category', 'reviews', 'user'])
             ->withCount('reviews')
             ->having('reviews_count', '>', 0)
@@ -86,8 +86,8 @@
                 return $recipe->reviews->avg('rating');
             })
             ->take(4);
-        
-        $favoriteRecipes = Auth::check() 
+
+        $favoriteRecipes = Auth::check()
             ? Auth::user()->favorites()->with(['category', 'reviews', 'user'])->latest()->take(4)->get()
             : collect();
     @endphp
@@ -188,38 +188,39 @@
             @endif
 
             <!-- Лучшее по отзывам -->
-            @if($topRatedRecipes->count() > 0)
-                <div class="mb-20">
-                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-3xl p-8 mb-10">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-4">
-                                <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
-                                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h2 class="text-4xl font-bold text-gray-900 mb-1">Лучшее по отзывам</h2>
-                                    <p class="text-gray-600">Топ рецептов, которые понравились пользователям</p>
-                                </div>
-                            </div>
-                            <a href="{{ route('recipes.popular') }}" class="group flex items-center gap-2 text-red-500 hover:text-red-600 font-semibold transition">
-                                <span>Смотреть все</span>
-                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        @foreach($topRatedRecipes as $recipe)
-                            <x-recipe-card :recipe="$recipe" />
-                        @endforeach
-                    </div>
+@if($topRatedRecipes->count() > 0)
+    <div class="mb-16">
+        <!-- Заголовок секции -->
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                    </svg>
                 </div>
-            @endif
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Лучшее по отзывам</h2>
+                    <p class="text-sm text-gray-500">Топ рецептов, которые понравились пользователям</p>
+                </div>
+            </div>
+            <a href="{{ route('recipes.popular') }}"
+               class="group flex items-center gap-2 text-red-500 hover:text-red-600 font-medium transition text-sm">
+                <span>Смотреть все</span>
+                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+            </a>
+        </div>
 
-            <!-- Ваше любимое -->
+        <!-- Сетка рецептов -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            @foreach($topRatedRecipes as $recipe)
+                <x-recipe-card :recipe="$recipe" />
+            @endforeach
+        </div>
+    </div>
+@endif
+
             @auth
                 @if($favoriteRecipes->count() > 0)
                     <div class="mb-20">

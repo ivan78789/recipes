@@ -20,10 +20,10 @@
             <div class="px-4 mb-4">
                 <div class="relative">
                     <form action="{{ route('recipes.index') }}" method="GET" class="flex gap-2">
-                        <input type="text" 
-                               name="search" 
+                        <input type="text"
+                               name="search"
                                value="{{ request('search') }}"
-                               placeholder="Поиск рецептов..." 
+                               placeholder="Поиск рецептов..."
                                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500">
                         <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

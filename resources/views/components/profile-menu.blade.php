@@ -1,9 +1,15 @@
 <div x-data="{ open: false }" class="relative">
     <button @click="open = !open" class="text-gray-800 hover:text-red-600 transition-colors p-1 hover:bg-red-50 rounded-full border border-gray-300 hover:border-red-300 flex items-center gap-2">
         @auth
-            @php /** @var \App\Models\User $user */ $user = Auth::user(); @endphp
+            @php
+                /** @var \App\Models\User $user */
+                $user = Auth::user();
+            @endphp
             @if($user->avatar_url)
-                <img src="{{ $user->avatar_url }}" alt="Аватар" class="w-8 h-8 rounded-full object-cover" />
+                <img src="{{ $user->avatar_url }}"
+                     alt="Аватар"
+                     class="w-8 h-8 rounded-full object-cover"
+                     onerror="this.onerror=null; this.src='{{ asset('img/default-avatar.png') }}'; this.style.display='block';" />
             @else
                 <svg class="w-5 h-5" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
